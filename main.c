@@ -47,10 +47,10 @@ int getXCoord(context *ctx, SDL_Rect *r) {
         printf("Going left\n");
     }
     if(!ctx->leftRight) {
-        xCoord = ctx->x;
+        xCoord = ctx->x + 2;
         ctx->x++;
     } else {
-        xCoord = ctx->x;
+        xCoord = ctx->x - 2;
         ctx->x--;
     }
     return xCoord;
@@ -67,10 +67,10 @@ int getYCoord(context *ctx, SDL_Rect *r) {
         printf("Going up\n");
     }
     if(!ctx->upDown) {
-        yCoord = ctx->y;
+        yCoord = ctx->y + 2;
         ctx->y++;
     } else {
-        yCoord = ctx->y;
+        yCoord = ctx->y - 2;
         ctx->y--;
     }
     return yCoord;
