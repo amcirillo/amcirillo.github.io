@@ -5,8 +5,7 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#define WIDTH 1920
-#define HEIGHT 1080
+#define NUM_SHAPES 3
 
 typedef struct context {
     SDL_Renderer *renderer;
@@ -16,5 +15,7 @@ typedef struct context {
     int x;
     int y;
 } context;
+
+context* initializeContext(SDL_Renderer *renderer, char *fileName, SDL_DisplayMode *dm);
 
 #endif
