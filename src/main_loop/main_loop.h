@@ -6,5 +6,6 @@
 void EMSCRIPTEN_KEEPALIVE mainloop(void *arg);
 int EMSCRIPTEN_KEEPALIVE getXCoord(context *ctx, SDL_Rect *r);
 int EMSCRIPTEN_KEEPALIVE getYCoord(context *ctx, SDL_Rect *r);
+int EMSCRIPTEN_KEEPALIVE getSquareWidth();
 
 #endif

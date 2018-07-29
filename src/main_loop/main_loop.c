@@ -13,14 +13,26 @@ void EMSCRIPTEN_KEEPALIVE mainloop(void *arg) {
     SDL_RenderClear(renderer);
     
     SDL_Rect *r = (SDL_Rect *) malloc(sizeof(SDL_Rect));
-    r->w = 400;
-    r->h = 400;
+    r->w = getSquareWidth();
+    r->h = getSquareWidth();
     r->x = getXCoord(ctx, r);
     r->y = getYCoord(ctx, r);
     SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255 );
     SDL_RenderCopy(renderer, ctx->texture, r, r);
     SDL_RenderPresent(renderer);
     free(r);
+}
+
+int getSquareWidth() {
+    SDL_DisplayMode dm;
+    SDL_GetCurrentDisplayMode(0, &dm);
+    if(dm.w < 400) {
+        return 25;
+    }
+    if(dm.w > 400 && dm.w < 1000) {
+        return 75;
+    }
+    return 400;
 }
 
 int EMSCRIPTEN_KEEPALIVE getXCoord(context *ctx, SDL_Rect *r) {

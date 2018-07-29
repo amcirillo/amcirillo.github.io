@@ -198,7 +198,7 @@ Module['FS_createPath']('/', 'resources', true, true);
   }
 
  }
- loadPackage({"files": [{"audio": 0, "start": 0, "crunched": 0, "end": 1582482, "filename": "/resources/resort.jpg"}, {"audio": 0, "start": 1582482, "crunched": 0, "end": 1823975, "filename": "/resources/field.jpg"}, {"audio": 0, "start": 1823975, "crunched": 0, "end": 2378810, "filename": "/resources/stone.jpg"}], "remote_package_size": 2378810, "package_uuid": "8fad597d-61f8-4215-bb54-589f1882138c"});
+ loadPackage({"files": [{"audio": 0, "start": 0, "crunched": 0, "end": 1582482, "filename": "/resources/resort.jpg"}, {"audio": 0, "start": 1582482, "crunched": 0, "end": 1823975, "filename": "/resources/field.jpg"}, {"audio": 0, "start": 1823975, "crunched": 0, "end": 2378810, "filename": "/resources/stone.jpg"}], "remote_package_size": 2378810, "package_uuid": "4b08253c-4c01-4fae-9dc4-0f8b5cab187d"});
 
 })();
 
@@ -11961,6 +11961,12 @@ var real__free = asm["_free"]; asm["_free"] = function() {
   return real__free.apply(null, arguments);
 };
 
+var real__getSquareWidth = asm["_getSquareWidth"]; asm["_getSquareWidth"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return real__getSquareWidth.apply(null, arguments);
+};
+
 var real__getXCoord = asm["_getXCoord"]; asm["_getXCoord"] = function() {
   assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
   assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
@@ -12103,6 +12109,10 @@ var _free = Module["_free"] = function() {
   assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
   assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
   return Module["asm"]["_free"].apply(null, arguments) };
+var _getSquareWidth = Module["_getSquareWidth"] = function() {
+  assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
+  assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
+  return Module["asm"]["_getSquareWidth"].apply(null, arguments) };
 var _getXCoord = Module["_getXCoord"] = function() {
   assert(runtimeInitialized, 'you need to wait for the runtime to be ready (e.g. wait for main() to be called)');
   assert(!runtimeExited, 'the runtime was exited (use NO_EXIT_RUNTIME to keep it alive after main() exits)');
