@@ -22,7 +22,7 @@ int EMSCRIPTEN_KEEPALIVE main() {
     const int fps = -1; // call the function as fast as the browser wants to render (typically 60fps)
     emscripten_log(0, "Entering main loop");
     emscripten_set_main_loop_arg(mainloop, ctx, fps, simulate_infinite_loop);
-    
+
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
