@@ -27,10 +27,10 @@ int getSquareWidth() {
     SDL_DisplayMode dm;
     SDL_GetCurrentDisplayMode(0, &dm);
     if(dm.w < 400) {
-        return 25;
+        return 75;
     }
     if(dm.w > 400 && dm.w < 1000) {
-        return 75;
+        return 200;
     }
     return 400;
 }
