@@ -39,9 +39,7 @@ Module.expectedDataFileDownloads++;
       Module['locateFile'] = Module['locateFilePackage'];
       err('warning: you defined Module.locateFilePackage, that has been renamed to Module.locateFile (using your locateFilePackage for now)');
     }
-    var REMOTE_PACKAGE_NAME = typeof Module['locateFile'] === 'function' ?
-                              Module['locateFile'](REMOTE_PACKAGE_BASE) :
-                              ((Module['filePackagePrefixURL'] || '') + REMOTE_PACKAGE_BASE);
+    var REMOTE_PACKAGE_NAME = Module['locateFile'] ? Module['locateFile'](REMOTE_PACKAGE_BASE, '') : REMOTE_PACKAGE_BASE;
   
     var REMOTE_PACKAGE_SIZE = metadata.remote_package_size;
     var PACKAGE_UUID = metadata.package_uuid;
@@ -117,10 +115,9 @@ Module.expectedDataFileDownloads++;
     }
 Module['FS_createPath']('/', 'resources', true, true);
 
-    function DataRequest(start, end, crunched, audio) {
+    function DataRequest(start, end, audio) {
       this.start = start;
       this.end = end;
-      this.crunched = crunched;
       this.audio = audio;
     }
     DataRequest.prototype = {
@@ -133,9 +130,7 @@ Module['FS_createPath']('/', 'resources', true, true);
       send: function() {},
       onload: function() {
         var byteArray = this.byteArray.subarray(this.start, this.end);
-
-          this.finish(byteArray);
-
+        this.finish(byteArray);
       },
       finish: function(byteArray) {
         var that = this;
@@ -156,7 +151,7 @@ Module['FS_createPath']('/', 'resources', true, true);
 
         var files = metadata.files;
         for (var i = 0; i < files.length; ++i) {
-          new DataRequest(files[i].start, files[i].end, files[i].crunched, files[i].audio).open('GET', files[i].filename);
+          new DataRequest(files[i].start, files[i].end, files[i].audio).open('GET', files[i].filename);
         }
 
   
@@ -198,7 +193,7 @@ Module['FS_createPath']('/', 'resources', true, true);
   }
 
  }
- loadPackage({"files": [{"audio": 0, "start": 0, "crunched": 0, "end": 1582482, "filename": "/resources/resort.jpg"}, {"audio": 0, "start": 1582482, "crunched": 0, "end": 1823975, "filename": "/resources/field.jpg"}, {"audio": 0, "start": 1823975, "crunched": 0, "end": 2378810, "filename": "/resources/stone.jpg"}], "remote_package_size": 2378810, "package_uuid": "8b089395-7808-453a-b267-d3f456d1d5b0"});
+ loadPackage({"files": [{"start": 0, "audio": 0, "end": 241493, "filename": "/resources/field.jpg"}, {"start": 241493, "audio": 0, "end": 1823975, "filename": "/resources/resort.jpg"}, {"start": 1823975, "audio": 0, "end": 2378810, "filename": "/resources/stone.jpg"}], "remote_package_size": 2378810, "package_uuid": "b9d9ccf4-2c93-409e-9ad6-7c7e6d11d30e"});
 
 })();
 
@@ -246,8 +241,23 @@ if (Module['ENVIRONMENT']) {
 // 2) We could be the application main() thread proxied to worker. (with Emscripten -s PROXY_TO_WORKER=1) (ENVIRONMENT_IS_WORKER == true, ENVIRONMENT_IS_PTHREAD == false)
 // 3) We could be an application pthread running in a worker. (ENVIRONMENT_IS_WORKER == true and ENVIRONMENT_IS_PTHREAD == true)
 
-if (ENVIRONMENT_IS_NODE) {
+assert(typeof Module['memoryInitializerPrefixURL'] === 'undefined', 'Module.memoryInitializerPrefixURL option was removed, use Module.locateFile instead');
+assert(typeof Module['pthreadMainPrefixURL'] === 'undefined', 'Module.pthreadMainPrefixURL option was removed, use Module.locateFile instead');
+assert(typeof Module['cdInitializerPrefixURL'] === 'undefined', 'Module.cdInitializerPrefixURL option was removed, use Module.locateFile instead');
+assert(typeof Module['filePackagePrefixURL'] === 'undefined', 'Module.filePackagePrefixURL option was removed, use Module.locateFile instead');
 
+// `/` should be present at the end if `scriptDirectory` is not empty
+var scriptDirectory = '';
+function locateFile(path) {
+  if (Module['locateFile']) {
+    return Module['locateFile'](path, scriptDirectory);
+  } else {
+    return scriptDirectory + path;
+  }
+}
+
+if (ENVIRONMENT_IS_NODE) {
+  scriptDirectory = __dirname + '/';
 
   // Expose functionality in the same simple way that the shells work
   // Note that we pollute the global namespace here, otherwise we break in node
@@ -333,6 +343,14 @@ if (ENVIRONMENT_IS_SHELL) {
   }
 } else
 if (ENVIRONMENT_IS_WEB || ENVIRONMENT_IS_WORKER) {
+  if (ENVIRONMENT_IS_WEB) {
+    var currentScript = document.currentScript;
+    if (currentScript.src.indexOf('blob:') !== 0) {
+      scriptDirectory = currentScript.src.split('/').slice(0, -1).join('/') + '/';
+    }
+  } else if (ENVIRONMENT_IS_WORKER) {
+    scriptDirectory = self.location.href.split('/').slice(0, -1).join('/') + '/';
+  }
 
 
   Module['read'] = function shell_read(url) {
@@ -1702,16 +1720,14 @@ function integrateWasmJS() {
   var wasmBinaryFile = 'index.wasm';
   var asmjsCodeFile = 'index.temp.asm.js';
 
-  if (typeof Module['locateFile'] === 'function') {
-    if (!isDataURI(wasmTextFile)) {
-      wasmTextFile = Module['locateFile'](wasmTextFile);
-    }
-    if (!isDataURI(wasmBinaryFile)) {
-      wasmBinaryFile = Module['locateFile'](wasmBinaryFile);
-    }
-    if (!isDataURI(asmjsCodeFile)) {
-      asmjsCodeFile = Module['locateFile'](asmjsCodeFile);
-    }
+  if (!isDataURI(wasmTextFile)) {
+    wasmTextFile = locateFile(wasmTextFile);
+  }
+  if (!isDataURI(wasmBinaryFile)) {
+    wasmBinaryFile = locateFile(wasmBinaryFile);
+  }
+  if (!isDataURI(asmjsCodeFile)) {
+    asmjsCodeFile = locateFile(asmjsCodeFile);
   }
 
   // utilities
@@ -1758,7 +1774,7 @@ function integrateWasmJS() {
       if (Module['readBinary']) {
         return Module['readBinary'](wasmBinaryFile);
       } else {
-        throw "on the web, we need the wasm binary to be preloaded and set on Module['wasmBinary']. emcc.py will do that for you when generating HTML (but not JS)";
+        throw "both async and sync fetching of the wasm failed";
       }
     }
     catch (err) {
@@ -2002,7 +2018,7 @@ function _emscripten_asm_const_iiii(code, a0, a1, a2) {
 
 STATIC_BASE = GLOBAL_BASE;
 
-STATICTOP = STATIC_BASE + 61744;
+STATICTOP = STATIC_BASE + 62016;
 /* global initializers */  __ATINIT__.push({ func: function() { __GLOBAL__sub_I_bind_cpp() } }, { func: function() { ___emscripten_environ_constructor() } });
 
 
@@ -2011,7 +2027,7 @@ STATICTOP = STATIC_BASE + 61744;
 
 
 
-var STATIC_BUMP = 61744;
+var STATIC_BUMP = 62016;
 Module["STATIC_BASE"] = STATIC_BASE;
 Module["STATIC_BUMP"] = STATIC_BUMP;
 
@@ -2148,10 +2164,10 @@ function copyTempDouble(ptr) {
           }
           console.log('main loop blocker "' + blocker.name + '" took ' + (Date.now() - start) + ' ms'); //, left: ' + Browser.mainLoop.remainingBlockers);
           Browser.mainLoop.updateStatus();
-          
+  
           // catches pause/resume main loop from blocker execution
           if (thisMainLoopId < Browser.mainLoop.currentlyRunningMainloop) return;
-          
+  
           setTimeout(Browser.mainLoop.runner, 0);
           return;
         }
@@ -2391,6 +2407,7 @@ function copyTempDouble(ptr) {
         };
         Module['preloadPlugins'].push(audioPlugin);
   
+  
         // Canvas event setup
   
         function pointerLockChange() {
@@ -2403,7 +2420,7 @@ function copyTempDouble(ptr) {
         if (canvas) {
           // forced aspect ratio can be enabled by defining 'forcedAspectRatio' on Module
           // Module['forcedAspectRatio'] = 4 / 3;
-          
+  
           canvas.requestPointerLock = canvas['requestPointerLock'] ||
                                       canvas['mozRequestPointerLock'] ||
                                       canvas['webkitRequestPointerLock'] ||
@@ -2640,13 +2657,13 @@ function copyTempDouble(ptr) {
       },getMouseWheelDelta:function (event) {
         var delta = 0;
         switch (event.type) {
-          case 'DOMMouseScroll': 
+          case 'DOMMouseScroll':
             delta = event.detail;
             break;
-          case 'mousewheel': 
+          case 'mousewheel':
             delta = event.wheelDelta;
             break;
-          case 'wheel': 
+          case 'wheel':
             delta = event['deltaY'];
             break;
           default:
@@ -2665,7 +2682,7 @@ function copyTempDouble(ptr) {
             Browser.mouseMovementX = Browser.getMovementX(event);
             Browser.mouseMovementY = Browser.getMovementY(event);
           }
-          
+  
           // check if SDL is available
           if (typeof SDL != "undefined") {
             Browser.mouseX = SDL.mouseX + Browser.mouseMovementX;
@@ -2675,7 +2692,7 @@ function copyTempDouble(ptr) {
             // FIXME: ideally this should be clamped against the canvas size and zero
             Browser.mouseX += Browser.mouseMovementX;
             Browser.mouseY += Browser.mouseMovementY;
-          }        
+          }
         } else {
           // Otherwise, calculate the movement based on the changes
           // in the coordinates.
@@ -2705,7 +2722,7 @@ function copyTempDouble(ptr) {
             adjustedY = adjustedY * (ch / rect.height);
   
             var coords = { x: adjustedX, y: adjustedY };
-            
+  
             if (event.type === 'touchstart') {
               Browser.lastTouches[touch.identifier] = coords;
               Browser.touches[touch.identifier] = coords;
@@ -2714,7 +2731,7 @@ function copyTempDouble(ptr) {
               if (!last) last = coords;
               Browser.lastTouches[touch.identifier] = last;
               Browser.touches[touch.identifier] = coords;
-            } 
+            }
             return;
           }
   
@@ -10861,14 +10878,14 @@ function copyTempDouble(ptr) {
         while (stack_args[1].indexOf('_emscripten_') >= 0)
           stack_args = __emscripten_traverse_stack(stack_args[0]);
       }
-      
+  
       // Process all lines:
       var lines = callstack.split('\n');
       callstack = '';
       var newFirefoxRe = new RegExp('\\s*(.*?)@(.*?):([0-9]+):([0-9]+)'); // New FF30 with column info: extract components of form '       Object._main@http://server.com:4324:12'
       var firefoxRe = new RegExp('\\s*(.*?)@(.*):(.*)(:(.*))?'); // Old FF without column info: extract components of form '       Object._main@http://server.com:4324'
       var chromeRe = new RegExp('\\s*at (.*?) \\\((.*):(.*):(.*)\\\)'); // Extract components of form '    at Object._main (http://server.com/file.html:4324:12)'
-      
+  
       for (var l in lines) {
         var line = lines[l];
   
@@ -10922,7 +10939,7 @@ function copyTempDouble(ptr) {
           }
           callstack += (haveSourceMap ? ('     = '+jsSymbolName) : ('    at '+cSymbolName)) + ' (' + file + ':' + lineno + ':' + column + ')\n';
         }
-        
+  
         // If we are still keeping track with the callstack by traversing via 'arguments.callee', print the function parameters as well.
         if (flags & 128 /*EM_LOG_FUNC_PARAMS*/ && stack_args[0]) {
           if (stack_args[1] == jsSymbolName && stack_args[2].length > 0) {
@@ -12383,6 +12400,7 @@ if (!Module["writeArrayToMemory"]) Module["writeArrayToMemory"] = function() { a
 if (!Module["writeAsciiToMemory"]) Module["writeAsciiToMemory"] = function() { abort("'writeAsciiToMemory' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 Module["addRunDependency"] = addRunDependency;
 Module["removeRunDependency"] = removeRunDependency;
+if (!Module["ENV"]) Module["ENV"] = function() { abort("'ENV' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 if (!Module["FS"]) Module["FS"] = function() { abort("'FS' was not exported. add it to EXTRA_EXPORTED_RUNTIME_METHODS (see the FAQ)") };
 Module["FS_createFolder"] = FS.createFolder;
 Module["FS_createPath"] = FS.createPath;

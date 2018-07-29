@@ -16,8 +16,8 @@ void EMSCRIPTEN_KEEPALIVE mainloop(void *arg) {
     SDL_RenderClear(renderer);
     
     SDL_Rect *r = (SDL_Rect *) malloc(sizeof(SDL_Rect));
-    r->w = getSquareWidth(dm);
-    r->h = getSquareWidth(dm);
+    r->w = dm->w * 20 / 100;
+    r->h = r->w;
     r->x = getXCoord(ctx, r, dm);
     r->y = getYCoord(ctx, r, dm);
     SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255 );
@@ -25,16 +25,6 @@ void EMSCRIPTEN_KEEPALIVE mainloop(void *arg) {
     SDL_RenderPresent(renderer);
     free(r);
     free(dm);
-}
-
-int getSquareWidth(SDL_DisplayMode *dm) {
-    if(dm->w < 400) {
-        return 75;
-    }
-    if(dm->w > 400 && dm->w < 1000) {
-        return 200;
-    }
-    return 400;
 }
 
 int EMSCRIPTEN_KEEPALIVE getXCoord(context *ctx, SDL_Rect *r, SDL_DisplayMode *dm) {
