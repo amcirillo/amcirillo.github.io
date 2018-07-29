@@ -5,8 +5,7 @@
 #define WIDTH 1920
 #define HEIGHT 1080
 
-typedef struct context
-{
+typedef struct context {
     SDL_Renderer *renderer;
     SDL_Texture *texture;
     int leftRight;
@@ -18,8 +17,7 @@ typedef struct context
 int getXCoord(context *ctx, SDL_Rect *r);
 int getYCoord(context *ctx, SDL_Rect *r);
 
-void mainloop(void *arg)
-{
+void mainloop(void *arg) {
     context *ctx = (context *) arg;
     SDL_Renderer *renderer = ctx->renderer;
 
@@ -77,8 +75,7 @@ int getYCoord(context *ctx, SDL_Rect *r) {
     return yCoord;
 }
 
-int main()
-{
+int main() {
     printf("Hello World!\n");
 
     SDL_Init(SDL_INIT_VIDEO);
