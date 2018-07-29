@@ -1,8 +1,12 @@
 #include "main_loop.h"
+#include "../events/events.h"
 
 void EMSCRIPTEN_KEEPALIVE mainloop(void *arg) {
     context *ctx = (context *) arg;
     SDL_Renderer *renderer = ctx->renderer;
+
+    // check for events
+    checkEvents();
 
     // black background
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
@@ -23,11 +27,11 @@ int EMSCRIPTEN_KEEPALIVE getXCoord(context *ctx, SDL_Rect *r) {
     int xCoord = 0;
     if(ctx->x == 0) {
         ctx->leftRight = 0;
-        printf("Going right\n");
+        emscripten_log(0, "Going right");
     }
     if(ctx->x == WIDTH - r->w) {
         ctx->leftRight = 1;
-        printf("Going left\n");
+        emscripten_log(0, "Going left");
     }
     if(!ctx->leftRight) {
         xCoord = ctx->x + 2;
@@ -43,11 +47,11 @@ int EMSCRIPTEN_KEEPALIVE getYCoord(context *ctx, SDL_Rect *r) {
     int yCoord = 0;
     if(ctx->y == 0) {
         ctx->upDown = 0;
-        printf("Going down\n");
+        emscripten_log(0, "Going down");
     }
     if(ctx->y == HEIGHT - r->h) {
         ctx->upDown = 1;
-        printf("Going up\n");
+        emscripten_log(0, "Going up");
     }
     if(!ctx->upDown) {
         yCoord = ctx->y + 2;

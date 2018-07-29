@@ -1,7 +1,6 @@
 #include "main_loop/main_loop.h"
 
 int EMSCRIPTEN_KEEPALIVE main() {
-    printf("Hello World!\n");
 
     SDL_Init(SDL_INIT_VIDEO);
     SDL_Window *window;
@@ -18,9 +17,10 @@ int EMSCRIPTEN_KEEPALIVE main() {
     SDL_Surface *surface = IMG_Load("resources/resort.jpg");
     SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
     ctx->texture = texture;
-    printf("Texture created\n");
+    emscripten_log(0, "Texture created");
     const int simulate_infinite_loop = 1; // call the function repeatedly
     const int fps = -1; // call the function as fast as the browser wants to render (typically 60fps)
+    emscripten_log(0, "Entering main loop");
     emscripten_set_main_loop_arg(mainloop, ctx, fps, simulate_infinite_loop);
     
     SDL_DestroyRenderer(renderer);
