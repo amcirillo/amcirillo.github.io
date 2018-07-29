@@ -2,8 +2,8 @@
 #include <SDL_image.h>
 #include <emscripten.h>
 
-#define WIDTH 1024
-#define HEIGHT 768
+#define WIDTH 1920
+#define HEIGHT 1080
 
 typedef struct context
 {
@@ -28,8 +28,8 @@ void mainloop(void *arg)
     SDL_RenderClear(renderer);
     
     SDL_Rect r;
-    r.w = 200;
-    r.h = 200;
+    r.w = 400;
+    r.h = 400;
     r.x = getXCoord(ctx, &r);
     r.y = getYCoord(ctx, &r);
     SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255 );
@@ -93,7 +93,7 @@ int main()
     ctx.leftRight = 0;
     ctx.upDown = 0;
 
-    SDL_Surface *surface = IMG_Load("resources/field.jpg");
+    SDL_Surface *surface = IMG_Load("resources/resort.jpg");
     SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
     ctx.texture = texture;
     printf("Texture created\n");
