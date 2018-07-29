@@ -198,7 +198,7 @@ Module['FS_createPath']('/', 'resources', true, true);
   }
 
  }
- loadPackage({"files": [{"audio": 0, "start": 0, "crunched": 0, "end": 1582482, "filename": "/resources/resort.jpg"}, {"audio": 0, "start": 1582482, "crunched": 0, "end": 1823975, "filename": "/resources/field.jpg"}, {"audio": 0, "start": 1823975, "crunched": 0, "end": 2378810, "filename": "/resources/stone.jpg"}], "remote_package_size": 2378810, "package_uuid": "477b2729-b5b0-4780-aa30-9c9a7524a8d6"});
+ loadPackage({"files": [{"audio": 0, "start": 0, "crunched": 0, "end": 1582482, "filename": "/resources/resort.jpg"}, {"audio": 0, "start": 1582482, "crunched": 0, "end": 1823975, "filename": "/resources/field.jpg"}, {"audio": 0, "start": 1823975, "crunched": 0, "end": 2378810, "filename": "/resources/stone.jpg"}], "remote_package_size": 2378810, "package_uuid": "8b089395-7808-453a-b267-d3f456d1d5b0"});
 
 })();
 
