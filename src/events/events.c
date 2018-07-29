@@ -5,7 +5,13 @@ void checkEvents() {
     while(SDL_PollEvent(event)) {
         switch (event->type) {
             case SDL_MOUSEMOTION:
-                emscripten_log(0, "Detected mouse event");
+                emscripten_log(0, "Detected mouse motion event");
+                break;
+            case SDL_MOUSEBUTTONDOWN:
+                emscripten_log(0, "Detected mouse button down event");
+                break;
+            case SDL_MOUSEBUTTONUP:
+                emscripten_log(0, "Detected mouse button up event");
                 break;
             case SDL_KEYDOWN:
                 emscripten_log(0, "Detected keyboard down event");
