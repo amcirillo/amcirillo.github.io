@@ -5,8 +5,10 @@ int EMSCRIPTEN_KEEPALIVE main() {
     SDL_Init(SDL_INIT_VIDEO);
     SDL_Window *window;
     SDL_Renderer *renderer;
-    SDL_CreateWindowAndRenderer(WIDTH, HEIGHT, 0, &window, &renderer);
-
+    SDL_DisplayMode dm;
+    SDL_GetCurrentDisplayMode(0, &dm);
+    SDL_CreateWindowAndRenderer(dm.w, dm.h, 0, &window, &renderer);
+ 
     context *ctx = (context *) malloc(sizeof(context));
     ctx->renderer = renderer;
     ctx->x = 0;
