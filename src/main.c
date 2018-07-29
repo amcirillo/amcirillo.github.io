@@ -8,6 +8,7 @@ int EMSCRIPTEN_KEEPALIVE main() {
     SDL_DisplayMode dm;
     SDL_GetCurrentDisplayMode(0, &dm);
     SDL_CreateWindowAndRenderer(dm.w, dm.h, 0, &window, &renderer);
+    emscripten_log(0, "Screen resolution: %dx%d", dm.w, dm.h);
  
     context *ctx = (context *) malloc(sizeof(context));
     ctx->renderer = renderer;
