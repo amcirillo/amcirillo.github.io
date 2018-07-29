@@ -1,4 +1,3 @@
-#include "../main.h"
 #include "main_loop.h"
 
 void EMSCRIPTEN_KEEPALIVE mainloop(void *arg) {
