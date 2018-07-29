@@ -25,14 +25,15 @@ void mainloop(void *arg) {
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
     
-    SDL_Rect r;
-    r.w = 400;
-    r.h = 400;
-    r.x = getXCoord(ctx, &r);
-    r.y = getYCoord(ctx, &r);
+    SDL_Rect *r = (SDL_Rect *) malloc(sizeof(SDL_Rect));
+    r->w = 400;
+    r->h = 400;
+    r->x = getXCoord(ctx, r);
+    r->y = getYCoord(ctx, r);
     SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255 );
-    SDL_RenderCopy(renderer, ctx->texture, &r, &r);
+    SDL_RenderCopy(renderer, ctx->texture, r, r);
     SDL_RenderPresent(renderer);
+    free(r);
 }
 
 int getXCoord(context *ctx, SDL_Rect *r) {
@@ -83,24 +84,24 @@ int main() {
     SDL_Renderer *renderer;
     SDL_CreateWindowAndRenderer(WIDTH, HEIGHT, 0, &window, &renderer);
 
-    context ctx;
-    ctx.renderer = renderer;
-    ctx.x = 0;
-    ctx.y = 0;
-    ctx.leftRight = 0;
-    ctx.upDown = 0;
+    context *ctx = (context *) malloc(sizeof(context));
+    ctx->renderer = renderer;
+    ctx->x = 0;
+    ctx->y = 0;
+    ctx->leftRight = 0;
+    ctx->upDown = 0;
 
     SDL_Surface *surface = IMG_Load("resources/resort.jpg");
     SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
-    ctx.texture = texture;
+    ctx->texture = texture;
     printf("Texture created\n");
     const int simulate_infinite_loop = 1; // call the function repeatedly
     const int fps = -1; // call the function as fast as the browser wants to render (typically 60fps)
-    emscripten_set_main_loop_arg(mainloop, &ctx, fps, simulate_infinite_loop);
+    emscripten_set_main_loop_arg(mainloop, ctx, fps, simulate_infinite_loop);
     
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
-
+    free(ctx);
     return EXIT_SUCCESS;
 }
