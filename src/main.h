@@ -5,7 +5,7 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#define NUM_SHAPES 10
+#define NUM_SHAPES 20
 
 typedef struct context {
     SDL_Renderer *renderer;

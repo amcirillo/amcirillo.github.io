@@ -14,12 +14,6 @@ int EMSCRIPTEN_KEEPALIVE main() {
     SDL_GetCurrentDisplayMode(0, &dm);
     SDL_CreateWindowAndRenderer(dm.w, dm.h, 0, &window, &renderer);
     emscripten_log(0, "Screen resolution: %dx%d", dm.w, dm.h);
- 
-    /*context *ctxResort = initializeContext(renderer, "resources/resort.jpg", &dm);
-    context *ctxStone = initializeContext(renderer, "resources/stone.jpg", &dm);
-    shapeStates *states = (shapeStates *) malloc(sizeof(shapeStates));
-    states->states[0] = ctxResort;
-    states->states[1] = ctxStone;*/
 
     shapeStates *ss = (shapeStates *) malloc(sizeof(shapeStates));
     for(int i = 0; i < NUM_SHAPES; i++) {
@@ -43,13 +37,6 @@ int EMSCRIPTEN_KEEPALIVE main() {
 }
 
 context* initializeContext(SDL_Renderer *renderer, SDL_DisplayMode *dm, char *fileName) {
-    /*char *fileName;
-    if (rand() % 2 == 0) {
-        fileName = "resources/resort.jpg";
-    } else {
-        fileName = "resources/stone.jgp";
-    }
-    emscripten_log(0, "Initializing context for: %s", fileName);*/
     SDL_Surface *surface = IMG_Load(fileName);
     SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
     context *ctx = (context *) malloc(sizeof(context));
