@@ -5,7 +5,8 @@
 #include "main_loop/main_loop.h"
 
 int EMSCRIPTEN_KEEPALIVE main() {
-
+    time_t t;
+    srand((unsigned) time(&t));
     SDL_Init(SDL_INIT_VIDEO);
     SDL_Window *window;
     SDL_Renderer *renderer;
@@ -35,8 +36,6 @@ int EMSCRIPTEN_KEEPALIVE main() {
 
 context* initializeContext(SDL_Renderer *renderer, char *fileName, SDL_DisplayMode *dm) {
     emscripten_log(0, "Initializing context for: %s", fileName);
-    time_t t;
-    srand((unsigned) time(&t));
     SDL_Surface *surface = IMG_Load(fileName);
     SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
     context *ctx = (context *) malloc(sizeof(context));
@@ -47,6 +46,5 @@ context* initializeContext(SDL_Renderer *renderer, char *fileName, SDL_DisplayMo
     ctx->upDown = rand() % 2;
     ctx->texture = texture;
     emscripten_log(0, "Start position: %dx%d", ctx->x, ctx->y);
-    sleep(1);
     return ctx;
 }

@@ -193,7 +193,7 @@ Module['FS_createPath']('/', 'resources', true, true);
   }
 
  }
- loadPackage({"files": [{"start": 0, "audio": 0, "end": 241493, "filename": "/resources/field.jpg"}, {"start": 241493, "audio": 0, "end": 1823975, "filename": "/resources/resort.jpg"}, {"start": 1823975, "audio": 0, "end": 3407198, "filename": "/resources/stone.jpg"}], "remote_package_size": 3407198, "package_uuid": "4f50b612-206c-46b5-9d88-7de89cb12656"});
+ loadPackage({"files": [{"start": 0, "audio": 0, "end": 241493, "filename": "/resources/field.jpg"}, {"start": 241493, "audio": 0, "end": 1823975, "filename": "/resources/resort.jpg"}, {"start": 1823975, "audio": 0, "end": 3407198, "filename": "/resources/stone.jpg"}], "remote_package_size": 3407198, "package_uuid": "6a7030ff-19bd-43f5-9bb1-4a892790452b"});
 
 })();
 
@@ -11330,8 +11330,7 @@ function copyTempDouble(ptr) {
         }
       }
       return 0;
-    }
-  Module["_usleep"] = _usleep;function _nanosleep(rqtp, rmtp) {
+    }function _nanosleep(rqtp, rmtp) {
       // int nanosleep(const struct timespec  *rqtp, struct timespec *rmtp);
       var seconds = HEAP32[((rqtp)>>2)];
       var nanoseconds = HEAP32[(((rqtp)+(4))>>2)];
