@@ -193,7 +193,7 @@ Module['FS_createPath']('/', 'resources', true, true);
   }
 
  }
- loadPackage({"files": [{"start": 0, "audio": 0, "end": 241493, "filename": "/resources/field.jpg"}, {"start": 241493, "audio": 0, "end": 1823975, "filename": "/resources/resort.jpg"}, {"start": 1823975, "audio": 0, "end": 3407198, "filename": "/resources/stone.jpg"}], "remote_package_size": 3407198, "package_uuid": "013082b9-be36-4485-b8f8-df1eba4d292d"});
+ loadPackage({"files": [{"start": 0, "audio": 0, "end": 241493, "filename": "/resources/field.jpg"}, {"start": 241493, "audio": 0, "end": 1823975, "filename": "/resources/resort.jpg"}, {"start": 1823975, "audio": 0, "end": 3407198, "filename": "/resources/stone.jpg"}], "remote_package_size": 3407198, "package_uuid": "3cb410b1-d71f-4bb5-b522-fe6d88c65c2a"});
 
 })();
 
@@ -2018,7 +2018,7 @@ function _emscripten_asm_const_iiii(code, a0, a1, a2) {
 
 STATIC_BASE = GLOBAL_BASE;
 
-STATICTOP = STATIC_BASE + 62032;
+STATICTOP = STATIC_BASE + 62048;
 /* global initializers */  __ATINIT__.push({ func: function() { __GLOBAL__sub_I_bind_cpp() } }, { func: function() { ___emscripten_environ_constructor() } });
 
 
@@ -2027,7 +2027,7 @@ STATICTOP = STATIC_BASE + 62032;
 
 
 
-var STATIC_BUMP = 62032;
+var STATIC_BUMP = 62048;
 Module["STATIC_BASE"] = STATIC_BASE;
 Module["STATIC_BUMP"] = STATIC_BUMP;
 

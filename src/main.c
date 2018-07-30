@@ -13,10 +13,13 @@ int EMSCRIPTEN_KEEPALIVE main() {
     SDL_CreateWindowAndRenderer(dm.w, dm.h, 0, &window, &renderer);
     emscripten_log(0, "Screen resolution: %dx%d", dm.w, dm.h);
  
-    context *ctx = (context *) malloc(sizeof(context));
-    ctx->shapeState[0] = initializeShape(renderer, "resources/resort.jpg", &dm);
-    ctx->shapeState[1] = initializeShape(renderer, "resources/stone.jpg", &dm);
+    context *ctx = initializeContext(renderer, "resources/resort.jpg", &dm);
 
+    SDL_Surface *surface = IMG_Load("resources/resort.jpg");
+    SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
+    SDL_Surface *stoneSurface = IMG_Load("resources/stone.jpg");
+    SDL_Texture *stoneTexture = SDL_CreateTextureFromSurface(renderer, stoneSurface);
+    emscripten_log(0, "Texture created");
     const int simulate_infinite_loop = 1; // call the function repeatedly
     const int fps = -1; // call the function as fast as the browser wants to render (typically 60fps)
     emscripten_log(0, "Entering main loop");
@@ -29,16 +32,17 @@ int EMSCRIPTEN_KEEPALIVE main() {
     return EXIT_SUCCESS;
 }
 
-shapeState* initializeShape(SDL_Renderer *renderer, char *fileName, SDL_DisplayMode *dm) {
+context* initializeContext(SDL_Renderer *renderer, char *fileName, SDL_DisplayMode *dm) {
     time_t t;
     srand((unsigned) time(&t));
     SDL_Surface *surface = IMG_Load(fileName);
     SDL_Texture *texture = SDL_CreateTextureFromSurface(renderer, surface);
-    shapeState *ss = (shapeState *) malloc(sizeof(shapeState));
-    ss->x = rand() % (dm->w / 2);
-    ss->y = rand() % (dm->h / 2);
-    ss->leftRight = rand() % 2;
-    ss->upDown = rand() % 2;
-    ss->texture = texture;
-    return ss;
+    context *ctx = (context *) malloc(sizeof(context));
+    ctx->renderer = renderer;
+    ctx->x = rand() % (dm->w / 2);
+    ctx->y = rand() % (dm->h / 2);
+    ctx->leftRight = rand() % 2;
+    ctx->upDown = rand() % 2;
+    ctx->texture = texture;
+    return ctx;
 }
