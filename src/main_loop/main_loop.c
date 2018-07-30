@@ -18,7 +18,8 @@ void EMSCRIPTEN_KEEPALIVE mainloop(void *arg) {
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         
         r = (SDL_Rect *) malloc(sizeof(SDL_Rect));
-        r->w = dm->w * 20 / 100;
+        //r->w = dm->w * 20 / 100;
+        r->w = dm->w / 10;
         r->h = r->w;
         r->x = getXCoord(states->states[i], r, dm);
         r->y = getYCoord(states->states[i], r, dm);
@@ -33,11 +34,9 @@ int EMSCRIPTEN_KEEPALIVE getXCoord(context *ctx, SDL_Rect *r, SDL_DisplayMode *d
     int xCoord = 0;
     if(ctx->x == 0) {
         ctx->leftRight = 0;
-        emscripten_log(0, "Going right");
     }
-    if(ctx->x == dm->w - r->w) {
+    if(ctx->x == dm->w - r->w || ctx->x > dm->w) {
         ctx->leftRight = 1;
-        emscripten_log(0, "Going left");
     }
     if(!ctx->leftRight) {
         xCoord = ctx->x + 2;
@@ -53,11 +52,9 @@ int EMSCRIPTEN_KEEPALIVE getYCoord(context *ctx, SDL_Rect *r, SDL_DisplayMode *d
     int yCoord = 0;
     if(ctx->y == 0) {
         ctx->upDown = 0;
-        emscripten_log(0, "Going down");
     }
-    if(ctx->y == dm->h - r->h) {
+    if(ctx->y == dm->h - r->h || ctx->y > dm->h) {
         ctx->upDown = 1;
-        emscripten_log(0, "Going up");
     }
     if(!ctx->upDown) {
         yCoord = ctx->y + 2;

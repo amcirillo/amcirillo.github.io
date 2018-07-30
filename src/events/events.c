@@ -5,8 +5,8 @@ void checkEvents() {
     while(SDL_PollEvent(event)) {
         switch (event->type) {
             case SDL_MOUSEMOTION:
-                emscripten_log(0, "Detected mouse motion event");
-                emscripten_log(0, "Mouse position: %d, %d", event->motion.x, event->motion.y);
+                //emscripten_log(0, "Detected mouse motion event");
+                //emscripten_log(0, "Mouse position: %d, %d", event->motion.x, event->motion.y);
                 break;
             case SDL_MOUSEBUTTONDOWN:
                 emscripten_log(0, "Detected mouse button down event");
