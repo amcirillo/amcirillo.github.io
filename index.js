@@ -193,7 +193,7 @@ Module['FS_createPath']('/', 'resources', true, true);
   }
 
  }
- loadPackage({"files": [{"start": 0, "audio": 0, "end": 241493, "filename": "/resources/field.jpg"}, {"start": 241493, "audio": 0, "end": 1823975, "filename": "/resources/resort.jpg"}, {"start": 1823975, "audio": 0, "end": 3407198, "filename": "/resources/stone.jpg"}], "remote_package_size": 3407198, "package_uuid": "5e7fbde2-487e-4ec2-9d04-cbc894018309"});
+ loadPackage({"files": [{"start": 0, "audio": 0, "end": 241493, "filename": "/resources/field.jpg"}, {"start": 241493, "audio": 0, "end": 1823975, "filename": "/resources/resort.jpg"}, {"start": 1823975, "audio": 0, "end": 3407198, "filename": "/resources/stone.jpg"}], "remote_package_size": 3407198, "package_uuid": "4f50b612-206c-46b5-9d88-7de89cb12656"});
 
 })();
 
@@ -2018,7 +2018,7 @@ function _emscripten_asm_const_iiii(code, a0, a1, a2) {
 
 STATIC_BASE = GLOBAL_BASE;
 
-STATICTOP = STATIC_BASE + 62048;
+STATICTOP = STATIC_BASE + 62080;
 /* global initializers */  __ATINIT__.push({ func: function() { __GLOBAL__sub_I_bind_cpp() } }, { func: function() { ___emscripten_environ_constructor() } });
 
 
@@ -2027,7 +2027,7 @@ STATICTOP = STATIC_BASE + 62048;
 
 
 
-var STATIC_BUMP = 62048;
+var STATIC_BUMP = 62080;
 Module["STATIC_BASE"] = STATIC_BASE;
 Module["STATIC_BUMP"] = STATIC_BUMP;
 
@@ -11330,7 +11330,8 @@ function copyTempDouble(ptr) {
         }
       }
       return 0;
-    }function _nanosleep(rqtp, rmtp) {
+    }
+  Module["_usleep"] = _usleep;function _nanosleep(rqtp, rmtp) {
       // int nanosleep(const struct timespec  *rqtp, struct timespec *rmtp);
       var seconds = HEAP32[((rqtp)>>2)];
       var nanoseconds = HEAP32[(((rqtp)+(4))>>2)];

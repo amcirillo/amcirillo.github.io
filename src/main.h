@@ -5,7 +5,7 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#define NUM_SHAPES 3
+#define NUM_SHAPES 2
 
 typedef struct context {
     SDL_Renderer *renderer;
@@ -15,6 +15,10 @@ typedef struct context {
     int x;
     int y;
 } context;
+
+typedef struct shapeStates {
+    context *states[NUM_SHAPES];
+} shapeStates;
 
 context* initializeContext(SDL_Renderer *renderer, char *fileName, SDL_DisplayMode *dm);
 

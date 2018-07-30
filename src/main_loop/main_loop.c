@@ -2,28 +2,30 @@
 #include "../events/events.h"
 
 void EMSCRIPTEN_KEEPALIVE mainloop(void *arg) {
-    context *ctx = (context *) arg;
-    SDL_Renderer *renderer = ctx->renderer;
-
+    shapeStates *states = (shapeStates *) arg;
+    SDL_Renderer *renderer;
+    SDL_Rect *r;
     SDL_DisplayMode *dm = (SDL_DisplayMode *) malloc(sizeof(SDL_DisplayMode));
-    SDL_GetCurrentDisplayMode(0, dm);
-
-    // check for events
-    checkEvents();
-
-    // black background
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
-    
-    SDL_Rect *r = (SDL_Rect *) malloc(sizeof(SDL_Rect));
-    r->w = dm->w * 20 / 100;
-    r->h = r->w;
-    r->x = getXCoord(ctx, r, dm);
-    r->y = getYCoord(ctx, r, dm);
-    SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255 );
-    SDL_RenderCopy(renderer, ctx->texture, r, r);
-    SDL_RenderPresent(renderer);
-    free(r);
+    for(int i = 0; i < NUM_SHAPES; i++) {
+        renderer = states->states[i]->renderer;
+        SDL_GetCurrentDisplayMode(0, dm);
+
+        // check for events
+        checkEvents();
+
+        // black background
+        SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+        
+        r = (SDL_Rect *) malloc(sizeof(SDL_Rect));
+        r->w = dm->w * 20 / 100;
+        r->h = r->w;
+        r->x = getXCoord(states->states[i], r, dm);
+        r->y = getYCoord(states->states[i], r, dm);
+        SDL_RenderCopy(renderer, states->states[i]->texture, r, r);
+        free(r);
+        SDL_RenderPresent(renderer);
+    }
     free(dm);
 }
 
